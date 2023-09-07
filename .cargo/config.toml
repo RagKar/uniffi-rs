@@ -8,7 +8,7 @@ release-backend-crates = [
     "-p", "uniffi_checksum_derive",
     "-p", "uniffi_macros",
     "-p", "uniffi_meta",
-    "-p", "uniffi_testing",
+    # "-p", "uniffi_testing",
     "-p", "uniffi_udl",
 ]
 release-uniffi = ["release", "-p", "uniffi"]

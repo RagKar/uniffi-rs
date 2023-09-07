@@ -9,9 +9,9 @@ use camino::Utf8Path;
 use fs_err as fs;
 
 pub mod gen_ruby;
-mod test;
+// mod test;
 pub use gen_ruby::{Config, RubyWrapper};
-pub use test::{run_test, test_script_command};
+// pub use test::{run_test, test_script_command};
 
 use super::super::interface::ComponentInterface;
 

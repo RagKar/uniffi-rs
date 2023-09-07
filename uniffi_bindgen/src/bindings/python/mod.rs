@@ -9,10 +9,10 @@ use camino::Utf8Path;
 use fs_err as fs;
 
 pub mod gen_python;
-mod test;
+// mod test;
 use super::super::interface::ComponentInterface;
 pub use gen_python::{generate_python_bindings, Config};
-pub use test::{run_script, run_test};
+// pub use test::{run_script, run_test};
 
 // Generate python bindings for the given ComponentInterface, in the given output directory.
 pub fn write_bindings(
