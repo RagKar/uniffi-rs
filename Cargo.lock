@@ -2030,7 +2030,6 @@ version = "0.24.3"
 dependencies = [
  "anyhow",
  "uniffi_meta",
- "uniffi_testing",
  "weedle2",
 ]
 
