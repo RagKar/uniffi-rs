@@ -160,6 +160,7 @@ pub trait BindingGenerator: Sized {
         ci: &ComponentInterface,
         config: &Self::Config,
         out_dir: &Utf8Path,
+        out_name: Option<String>,
     ) -> Result<()>;
 
     /// Check if `library_path` used by library mode is valid for this generator
@@ -179,6 +180,7 @@ impl BindingGenerator for BindingGeneratorDefault {
         ci: &ComponentInterface,
         config: &Self::Config,
         out_dir: &Utf8Path,
+        out_name: Option<String>,
     ) -> Result<()> {
         for &language in &self.target_languages {
             bindings::write_bindings(
@@ -187,6 +189,7 @@ impl BindingGenerator for BindingGeneratorDefault {
                 out_dir,
                 language,
                 self.try_format_code,
+                out_name.clone(),
             )?;
         }
         Ok(())
@@ -226,6 +229,7 @@ pub fn generate_external_bindings<T: BindingGenerator>(
     library_file: Option<impl AsRef<Utf8Path>>,
     crate_name: Option<&str>,
 ) -> Result<()> {
+    let out_name = crate_name.map(|name| name.to_owned());
     let crate_name = crate_name
         .map(|c| Ok(c.to_string()))
         .unwrap_or_else(|| crate_name_from_cargo_toml(udl_file.as_ref()))?;
@@ -253,7 +257,7 @@ pub fn generate_external_bindings<T: BindingGenerator>(
         udl_file.as_ref(),
         out_dir_override.as_ref().map(|p| p.as_ref()),
     )?;
-    binding_generator.write_bindings(&component, &config, &out_dir)
+    binding_generator.write_bindings(&component, &config, &out_dir, out_name)
 }
 
 // Generate the infrastructural Rust code for implementing the UDL interface,

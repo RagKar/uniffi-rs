@@ -87,6 +87,7 @@ pub fn generate_external_bindings<T: BindingGenerator>(
         // We can finally call update_from_dependency_configs
         source.config.update_from_dependency_configs(config_map);
     }
+    let out_name = crate_name.clone();
     fs::create_dir_all(out_dir)?;
     if let Some(crate_name) = &crate_name {
         let old_elements = sources.drain(..);
@@ -101,7 +102,7 @@ pub fn generate_external_bindings<T: BindingGenerator>(
     }
 
     for source in sources.iter() {
-        binding_generator.write_bindings(&source.ci, &source.config, out_dir)?;
+        binding_generator.write_bindings(&source.ci, &source.config, out_dir, out_name.clone())?;
     }
 
     Ok(sources)

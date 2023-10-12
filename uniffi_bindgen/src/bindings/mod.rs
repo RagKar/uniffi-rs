@@ -108,18 +108,19 @@ pub fn write_bindings(
     out_dir: &Utf8Path,
     language: TargetLanguage,
     try_format_code: bool,
+    out_name: Option<String>,
 ) -> Result<()> {
     match language {
         TargetLanguage::Kotlin => {
-            kotlin::write_bindings(&config.kotlin, ci, out_dir, try_format_code)?
+            kotlin::write_bindings(&config.kotlin, ci, out_dir, try_format_code, out_name)?
         }
         TargetLanguage::Swift => {
-            swift::write_bindings(&config.swift, ci, out_dir, try_format_code)?
+            swift::write_bindings(&config.swift, ci, out_dir, try_format_code, out_name)?
         }
         TargetLanguage::Python => {
-            python::write_bindings(&config.python, ci, out_dir, try_format_code)?
+            python::write_bindings(&config.python, ci, out_dir, try_format_code, out_name)?
         }
-        TargetLanguage::Ruby => ruby::write_bindings(&config.ruby, ci, out_dir, try_format_code)?,
+        TargetLanguage::Ruby => ruby::write_bindings(&config.ruby, ci, out_dir, try_format_code, out_name)?,
     }
     Ok(())
 }

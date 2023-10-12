@@ -9,10 +9,10 @@ use camino::Utf8Path;
 use fs_err as fs;
 
 pub mod gen_python;
-mod test;
+// mod test;
 use super::super::interface::ComponentInterface;
 pub use gen_python::{generate_python_bindings, Config};
-pub use test::{run_script, run_test};
+// pub use test::{run_script, run_test};
 
 // Generate python bindings for the given ComponentInterface, in the given output directory.
 pub fn write_bindings(
@@ -20,8 +20,10 @@ pub fn write_bindings(
     ci: &ComponentInterface,
     out_dir: &Utf8Path,
     try_format_code: bool,
+    out_name: Option<String>,
 ) -> Result<()> {
-    let py_file = out_dir.join(format!("{}.py", ci.namespace()));
+    let name = out_name.as_deref().or_else(|| Some(ci.namespace())).unwrap();
+    let py_file = out_dir.join(format!("{}.py", name));
     fs::write(&py_file, generate_python_bindings(config, ci)?)?;
 
     if try_format_code {

@@ -37,10 +37,10 @@ use fs_err as fs;
 
 pub mod gen_swift;
 pub use gen_swift::{generate_bindings, Config};
-mod test;
+// mod test;
 
 use super::super::interface::ComponentInterface;
-pub use test::{run_script, run_test};
+// pub use test::{run_script, run_test};
 
 /// The Swift bindings generated from a [`ComponentInterface`].
 ///
@@ -63,6 +63,7 @@ pub fn write_bindings(
     ci: &ComponentInterface,
     out_dir: &Utf8Path,
     try_format_code: bool,
+    out_name: Option<String>,
 ) -> Result<()> {
     let Bindings {
         header,
@@ -70,16 +71,17 @@ pub fn write_bindings(
         modulemap,
     } = generate_bindings(config, ci)?;
 
-    let source_file = out_dir.join(format!("{}.swift", config.module_name()));
+    let name = out_name.unwrap_or_else(|| config.module_name());
+    let source_file = out_dir.join(format!("{}.swift", name));
     fs::write(&source_file, library)?;
 
-    let header_file = out_dir.join(config.header_filename());
+    let header_file = out_dir.join(format!("{}.h", name));
     fs::write(header_file, header)?;
 
-    if let Some(modulemap) = modulemap {
-        let modulemap_file = out_dir.join(config.modulemap_filename());
-        fs::write(modulemap_file, modulemap)?;
-    }
+    // if let Some(modulemap) = modulemap {
+    //     let modulemap_file = out_dir.join(config.modulemap_filename());
+    //     fs::write(modulemap_file, modulemap)?;
+    // }
 
     if try_format_code {
         if let Err(e) = Command::new("swiftformat")

@@ -9,20 +9,22 @@ use std::process::Command;
 
 pub mod gen_kotlin;
 pub use gen_kotlin::{generate_bindings, Config};
-mod test;
+// mod test;
 
 use super::super::interface::ComponentInterface;
-pub use test::{run_script, run_test};
+// pub use test::{run_script, run_test};
 
 pub fn write_bindings(
     config: &Config,
     ci: &ComponentInterface,
     out_dir: &Utf8Path,
     try_format_code: bool,
+    out_name: Option<String>,
 ) -> Result<()> {
-    let mut kt_file = full_bindings_path(config, out_dir);
+    let mut kt_file = Utf8PathBuf::from(out_dir);
     fs::create_dir_all(&kt_file)?;
-    kt_file.push(format!("{}.kt", ci.namespace()));
+    let name = out_name.as_deref().or_else(|| Some(ci.namespace())).unwrap();
+    kt_file.push(format!("{}.kt", name));
     fs::write(&kt_file, generate_bindings(config, ci)?)?;
     if try_format_code {
         if let Err(e) = Command::new("ktlint").arg("-F").arg(&kt_file).output() {

@@ -43,6 +43,7 @@ pub fn run_script(
         &[TargetLanguage::Kotlin],
         &out_dir,
         false,
+        None,
     )?;
     let jar_file = build_jar(crate_name, &out_dir, options)?;
 

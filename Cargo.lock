@@ -1951,7 +1951,6 @@ dependencies = [
  "serde",
  "toml",
  "uniffi_meta",
- "uniffi_testing",
  "uniffi_udl",
 ]
 

@@ -8,13 +8,13 @@ pub use uniffi_macros::*;
 #[cfg(feature = "cli")]
 mod cli;
 #[cfg(feature = "bindgen-tests")]
-pub use uniffi_bindgen::bindings::kotlin::run_test as kotlin_run_test;
+// pub use uniffi_bindgen::bindings::kotlin::run_test as kotlin_run_test;
 #[cfg(feature = "bindgen-tests")]
-pub use uniffi_bindgen::bindings::python::run_test as python_run_test;
+// pub use uniffi_bindgen::bindings::python::run_test as python_run_test;
 #[cfg(feature = "bindgen-tests")]
-pub use uniffi_bindgen::bindings::ruby::run_test as ruby_run_test;
+// pub use uniffi_bindgen::bindings::ruby::run_test as ruby_run_test;
 #[cfg(feature = "bindgen-tests")]
-pub use uniffi_bindgen::bindings::swift::run_test as swift_run_test;
+// pub use uniffi_bindgen::bindings::swift::run_test as swift_run_test;
 #[cfg(feature = "bindgen")]
 pub use uniffi_bindgen::{
     bindings::TargetLanguage, generate_bindings, generate_component_scaffolding,
