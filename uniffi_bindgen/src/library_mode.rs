@@ -25,6 +25,7 @@ use cargo_metadata::{MetadataCommand, Package};
 use std::{
     collections::{HashMap, HashSet},
     fs,
+    path::{Path as StdPath, PathBuf},
 };
 use uniffi_meta::{
     create_metadata_groups, fixup_external_type, group_metadata, Metadata, MetadataGroup,
@@ -51,6 +52,13 @@ pub fn generate_bindings(
     )
 }
 
+fn manifest_path() -> Result<PathBuf, String> {
+    let manifest_dir =
+        std::env::var_os("CARGO_MANIFEST_DIR").ok_or("`CARGO_MANIFEST_DIR` is not set")?;
+
+    Ok(StdPath::new(&manifest_dir).join("Cargo.toml"))
+}
+
 /// Generate foreign bindings
 ///
 /// Returns the list of sources used to generate the bindings, in no particular order.
@@ -60,7 +68,9 @@ pub fn generate_external_bindings<T: BindingGenerator>(
     crate_name: Option<String>,
     out_dir: &Utf8Path,
 ) -> Result<Vec<Source<T::Config>>> {
+    let path = manifest_path().expect("missing manifest path");
     let cargo_metadata = MetadataCommand::new()
+        .manifest_path(path)
         .exec()
         .context("error running cargo metadata")?;
     let cdylib_name = calc_cdylib_name(library_path);
