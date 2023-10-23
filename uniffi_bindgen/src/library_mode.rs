@@ -70,7 +70,7 @@ pub fn generate_external_bindings<T: BindingGenerator>(
 ) -> Result<Vec<Source<T::Config>>> {
     let path = manifest_path().expect("missing manifest path");
     let cargo_metadata = MetadataCommand::new()
-        .manifest_path(path)
+        .other_options(["--frozen".to_owned()])
         .exec()
         .context("error running cargo metadata")?;
     let cdylib_name = calc_cdylib_name(library_path);
