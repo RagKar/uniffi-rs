@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+use std::fs::create_dir;
+
 use camino::Utf8PathBuf;
 use clap::{Parser, Subcommand};
 use uniffi_bindgen::bindings::TargetLanguage;
@@ -55,6 +57,9 @@ enum Commands {
 
         /// Path to the UDL file, or cdylib if `library-mode` is specified
         source: Utf8PathBuf,
+
+        #[clap(long)]
+        crate_root: Utf8PathBuf,
     },
 
     /// Generate Rust scaffolding code
@@ -90,6 +95,7 @@ pub fn run_main() -> anyhow::Result<()> {
             source,
             crate_name,
             library_mode,
+            crate_root,
         } => {
             if library_mode {
                 if lib_file.is_some() {
@@ -103,7 +109,11 @@ pub fn run_main() -> anyhow::Result<()> {
                     panic!("please specify at least one language with --language")
                 }
                 uniffi_bindgen::library_mode::generate_bindings(
-                    &source, crate_name, &language, &out_dir, !no_format,
+                    &source,
+                    &crate_root,
+                    &language,
+                    &out_dir,
+                    !no_format,
                 )?;
             } else {
                 uniffi_bindgen::generate_bindings(
