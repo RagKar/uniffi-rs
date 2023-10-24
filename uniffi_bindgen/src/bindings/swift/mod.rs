@@ -78,10 +78,10 @@ pub fn write_bindings(
     let header_file = out_dir.join(format!("{}.h", name));
     fs::write(header_file, header)?;
 
-    // if let Some(modulemap) = modulemap {
-    //     let modulemap_file = out_dir.join(config.modulemap_filename());
-    //     fs::write(modulemap_file, modulemap)?;
-    // }
+    if let Some(modulemap) = modulemap {
+        let modulemap_file = out_dir.join(config.modulemap_filename());
+        fs::write(modulemap_file, modulemap)?;
+    }
 
     if try_format_code {
         if let Err(e) = Command::new("swiftformat")
