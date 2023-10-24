@@ -28,6 +28,7 @@ use uniffi_meta::{create_metadata_groups, group_metadata};
 /// Returns the list of sources used to generate the bindings, in no particular order.
 pub fn generate_bindings(
     library_path: &Utf8Path,
+    crate_name: Option<String>,
     crate_root: &Utf8Path,
     target_languages: &[TargetLanguage],
     out_dir: &Utf8Path,
@@ -39,6 +40,7 @@ pub fn generate_bindings(
             try_format_code,
         },
         library_path,
+        crate_name,
         crate_root,
         out_dir,
     )
@@ -50,6 +52,7 @@ pub fn generate_bindings(
 pub fn generate_external_bindings<T: BindingGenerator>(
     binding_generator: T,
     library_path: &Utf8Path,
+    crate_name: Option<String>,
     crate_root: &Utf8Path,
     out_dir: &Utf8Path,
 ) -> Result<Vec<Source<T::Config>>> {

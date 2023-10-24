@@ -110,6 +110,7 @@ pub fn run_main() -> anyhow::Result<()> {
                 }
                 uniffi_bindgen::library_mode::generate_bindings(
                     &source,
+                    crate_name,
                     &crate_root,
                     &language,
                     &out_dir,
